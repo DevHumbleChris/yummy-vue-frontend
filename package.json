@@ -49,5 +49,6 @@
   "description": "Yummy Frontend App",
   "main": "index.js",
   "author": "DevHumbleChris <dev.humblechris254@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "repository": "https://github.com/DevHumbleChris/yummy-vue-frontend.git"
 }

@@ -1,4 +1,5 @@
 <template>
+  <section></section>
 </template>
 
 <script>

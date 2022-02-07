@@ -15,7 +15,7 @@
   ```
 -->
 <template>
-  <div class="bg-white">
+  <div class="">
     <!-- Mobile menu -->
     <TransitionRoot as="template" :show="open">
       <Dialog as="div" class="fixed inset-0 flex z-40 lg:hidden" @close="open = false">

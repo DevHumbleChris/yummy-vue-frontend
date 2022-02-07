@@ -1,5 +1,5 @@
 {
-  "name": "yummy-frontend",
+  "name": "yummy-vue-frontend",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -46,7 +46,7 @@
     "eslint-plugin-standard": "^4.0.0",
     "eslint-plugin-vue": "^7.0.0"
   },
-  "description": "Yummy Frontend App",
+  "description": "Yummy Vue Frontend",
   "main": "index.js",
   "author": "DevHumbleChris <dev.humblechris254@gmail.com>",
   "license": "MIT",

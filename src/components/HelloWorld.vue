@@ -250,14 +250,15 @@
         </nav>
 
         <div class="w-full md:w-1/3 xl:w-1/4 p-6 flex flex-col">
-          <div class="bg-white shadow-xl rounded-xl hover:grow hover:shadow-lg">
+          <div v-for="product in products" :key="product.id" class="bg-white shadow-xl rounded-xl hover:grow hover:shadow-lg">
             <img
-              class=""
-              src="https://images.unsplash.com/photo-1555982105-d25af4182e4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=400&h=400&q=80"
+              class="mx-h-xs"
+              :src="product.product_image"
+              :alt="product.name"
             />
 
             <div class="px-3 pt-3 flex items-center justify-between">
-              <p class="text-lg text-blue-900">Product Name</p>
+              <p class="text-lg text-blue-900">{{ product.name }}</p>
 
               <svg
                 class="h-6 w-6 fill-current text-gray-500 hover:text-black"
@@ -269,7 +270,7 @@
                 />
               </svg>
             </div>
-            <p class="px-3 pb-2 text-indigo-800">£9.99</p>
+            <p class="px-3 pb-2 text-indigo-800">{{ product.price }}</p>
 
           </div>
         </div>
@@ -313,8 +314,19 @@
 </template>
 
 <script>
+import { useStore } from 'vuex'
+import { computed } from 'vue'
 export default {
-  name: 'HelloWorld'
+  name: 'HelloWorld',
+  setup () {
+    const store = useStore()
+    const products = computed(() => {
+      return store.state.all_products
+    })
+    return {
+      products
+    }
+  }
 }
 </script>
 

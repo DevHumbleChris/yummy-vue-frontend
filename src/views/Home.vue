@@ -1,7 +1,9 @@
 <template>
   <div class="home">
     <HelloWorld />
-    <div>{{ responseData }}</div>
+    <div v-for="category in responseData" :key="category.id">
+      {{ category.name }}
+    </div>
   </div>
 </template>
 
@@ -13,15 +15,21 @@ export default {
   name: 'Home',
   data () {
     return {
-      responseData: ''
+      responseData: '',
+      love: 'failed'
     }
   },
   components: {
     HelloWorld
   },
   mounted () {
-    const response = axios.get('http://127.0.0.1:800/api/v1/all-products/')
-    this.responseData = response.data
+    axios.get('http://127.0.0.1:8000/api/v1/category/')
+      .then(res => {
+        this.responseData = res.data
+      })
+      .catch(err => {
+        console.log(err.message)
+      })
   }
 }
 </script>

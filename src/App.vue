@@ -5,9 +5,18 @@
 
 <script>
 import Navbar from '@/components/Navbar.vue'
+import { useStore } from 'vuex'
+import { onBeforeMount } from 'vue'
+
 export default {
   components: {
     Navbar
+  },
+  setup () {
+    const store = useStore()
+    onBeforeMount(() => {
+      store.commit('SET_LATEST_PRODUCTS')
+    })
   }
 }
 </script>

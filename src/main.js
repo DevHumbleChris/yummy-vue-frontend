@@ -11,5 +11,6 @@ import { far } from '@fortawesome/free-regular-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 library.add(fas, fab, far)
+console.log(fas)
 
 createApp(App).use(store).use(router).component('FontAwesomeIcon', FontAwesomeIcon).mount('#app')

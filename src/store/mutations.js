@@ -9,5 +9,14 @@ export default {
       .catch(err => {
         console.log(err.message)
       })
+  },
+  GET_CATEGORIES (state) {
+    axios.get(state.baseURL + 'category/')
+      .then(resp => {
+        state.catgories = resp.data
+      })
+      .catch(err => {
+        console.log(err.message)
+      })
   }
 }

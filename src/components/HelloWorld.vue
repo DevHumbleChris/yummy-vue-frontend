@@ -146,7 +146,6 @@
         <div>
           <input type="checkbox" id="button">
           <label for="button">
-            <i class="fa-regular fa-meat"></i>
           </label>
         </div>
       </div>

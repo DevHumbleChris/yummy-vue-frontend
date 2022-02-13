@@ -32,50 +32,11 @@
               </button>
             </div>
 
-            <!-- Links -->
-            <TabGroup as="div" class="mt-2">
-              <div class="border-b border-gray-200">
-                <TabList class="-mb-px flex px-4 space-x-8">
-                  <Tab as="template" v-for="category in navigation.categories" :key="category.name" v-slot="{ selected }">
-                    <button :class="[selected ? 'text-indigo-600 border-indigo-600' : 'text-gray-900 border-transparent', 'flex-1 whitespace-nowrap py-4 px-1 border-b-2 text-base font-medium']">
-                      {{ category.name }}
-                    </button>
-                  </Tab>
-                </TabList>
-              </div>
-              <TabPanels as="template">
-                <TabPanel v-for="category in navigation.categories" :key="category.name" class="pt-10 pb-8 px-4 space-y-10">
-                  <div class="grid grid-cols-2 gap-x-4">
-                    <div v-for="item in category.featured" :key="item.name" class="group relative text-sm">
-                      <div class="aspect-w-1 aspect-h-1 rounded-lg bg-gray-100 overflow-hidden group-hover:opacity-75">
-                        <img :src="item.imageSrc" :alt="item.imageAlt" class="object-center object-cover" />
-                      </div>
-                      <a :href="item.href" class="mt-6 block font-medium text-gray-900">
-                        <span class="absolute z-10 inset-0" aria-hidden="true" />
-                        {{ item.name }}
-                      </a>
-                      <p aria-hidden="true" class="mt-1">Shop now</p>
-                    </div>
-                  </div>
-                  <div v-for="section in category.sections" :key="section.name">
-                    <p :id="`${category.id}-${section.id}-heading-mobile`" class="font-medium text-gray-900">
-                      {{ section.name }}
-                    </p>
-                    <ul role="list" :aria-labelledby="`${category.id}-${section.id}-heading-mobile`" class="mt-6 flex flex-col space-y-6">
-                      <li v-for="item in section.items" :key="item.name" class="flow-root">
-                        <a :href="item.href" class="-m-2 p-2 block text-gray-500">
-                          {{ item.name }}
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-                </TabPanel>
-              </TabPanels>
-            </TabGroup>
-
-            <div class="border-t border-gray-200 py-6 px-4 space-y-6">
-              <div v-for="page in navigation.pages" :key="page.name" class="flow-root">
-                <a :href="page.href" class="-m-2 p-2 block font-medium text-gray-900">{{ page.name }}</a>
+            <div class="py-6 px-4 space-y-6">
+              <div v-for="category in categories" :key="category.id" class="flow-root">
+                <a :href="category.slug" class="-m-2 p-2 block font-medium text-gray-900 flex items-center">
+                  <img :src="category.icon_image_url" class="h-8 w-auto "/>
+                  <span class="mx-2 capitalize">{{ category.name }}</span></a>
               </div>
             </div>
 
@@ -86,14 +47,6 @@
               <div class="flow-root">
                 <a href="#" class="-m-2 p-2 block font-medium text-gray-900">Create account</a>
               </div>
-            </div>
-
-            <div class="border-t border-gray-200 py-6 px-4">
-              <a href="#" class="-m-2 p-2 flex items-center">
-                <img src="https://tailwindui.com/img/flags/flag-canada.svg" alt="" class="w-5 h-auto block flex-shrink-0" />
-                <span class="ml-3 block text-base font-medium text-gray-900"> CAD </span>
-                <span class="sr-only">, change currency</span>
-              </a>
             </div>
           </div>
         </TransitionChild>
@@ -214,7 +167,9 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import { useStore } from 'vuex'
+import axios from 'axios'
 import {
   Dialog,
   DialogOverlay,
@@ -222,11 +177,6 @@ import {
   PopoverButton,
   PopoverGroup,
   PopoverPanel,
-  Tab,
-  TabGroup,
-  TabList,
-  TabPanel,
-  TabPanels,
   TransitionChild,
   TransitionRoot
 } from '@headlessui/vue'
@@ -363,11 +313,6 @@ export default {
     PopoverButton,
     PopoverGroup,
     PopoverPanel,
-    Tab,
-    TabGroup,
-    TabList,
-    TabPanel,
-    TabPanels,
     TransitionChild,
     TransitionRoot,
     MenuIcon,
@@ -377,11 +322,29 @@ export default {
   },
   setup () {
     const open = ref(false)
+    const store = useStore()
+    const categories = ref([])
+    onMounted(() => {
+      axios.get(store.state.baseURL + 'category/')
+        .then(resp => {
+          categories.value = resp.data
+        })
+        .catch(err => {
+          console.log(err.message)
+        })
+    })
 
     return {
       navigation,
-      open
+      open,
+      categories
     }
   }
 }
 </script>
+
+<style>
+  .stylish-font {
+  font-family: 'Shizuru', cursive;
+}
+</style>

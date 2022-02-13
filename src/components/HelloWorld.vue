@@ -88,10 +88,10 @@
     </div>
 
     <section class="py-8">
-      <div class="container mx-auto flex items-center flex-wrap pt-4 pb-12">
+      <div class="container mx-auto flex items-center flex-wrap pt-4 pb-3">
         <nav id="store" class="w-full z-30 top-0 px-6 py-1">
           <div
-            class="w-full container mx-auto flex flex-wrap items-center justify-between mt-0 px-2 py-3"
+            class="w-full container mx-auto flex flex-wrap items-center justify-between mt-0 px-2 py-1"
           >
             <a
               class="uppercase tracking-wide no-underline hover:no-underline font-bold text-indigo-800 text-xl"
@@ -115,6 +115,28 @@
             </div>
           </div>
         </nav>
+        <div class="m-auto w-96 my-2 bg-indigo-200 p-3 rounded-2xl shadow-xl">
+          <div class="flex justify-between my-1">
+            <h4 class="text-indigo-500 text-lg">Filter Selection</h4>
+            <button>
+              <FontAwesomeIcon :icon="['far', 'times-circle']" class="text-indigo-500 text-lg" />
+            </button>
+          </div>
+          <p>{{ checkedCategory }}</p>
+          <div class="flex flex-wrap justify-center p-1">
+            <div v-for="category in categories" :key="category.id" class="mx-3">
+              <input v-model="checkedCategory" type="checkbox" :value="category.name" :id="category.slug" hidden />
+              <label :for="category.slug" class="mx-2">
+                <img :src="category.icon_image_url" alt="category.name" class="w-12 object-contain rounded-xl border-2 border-purple-50 p-1"/>
+                <h4 class="text-center text-sm">
+                  {{ category.name }}
+                </h4>
+              </label>
+            </div>
+          </div>
+          <button class="text-indigo-600 border-2 border-indigo-500 active:border-pink-600 font-bold uppercase text-sm px-6 py-3 rounded-3xl shadow-2xl hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">clear</button>
+          <button class="text-indigo-600 border-2 border-indigo-500 active:border-pink-600 font-bold uppercase text-sm px-6 py-3 rounded-3xl shadow-2xl hover:shadow-lg outline-none focus:outline-none ml-3 mr-1 mb-1 ease-linear transition-all duration-150">close</button>
+        </div>
 
         <div class="w-full md:w-1/3 xl:w-1/4 p-6 flex flex-col">
           <div v-for="product in products" :key="product.id" class="bg-white shadow-xl rounded-xl hover:grow hover:shadow-lg">
@@ -138,15 +160,7 @@
               </svg>
             </div>
             <p class="px-3 pb-2 text-indigo-800">{{ product.price }}</p>
-
           </div>
-        </div>
-      </div>
-      <div class="container mx-auto flex items-center flex-wrap pt-3 pb-6">
-        <div>
-          <input type="checkbox" id="button">
-          <label for="button">
-          </label>
         </div>
       </div>
     </section>
@@ -189,7 +203,8 @@
 
 <script>
 import { useStore } from 'vuex'
-import { computed } from 'vue'
+import { ref, computed, onBeforeMount } from 'vue'
+import axios from 'axios'
 export default {
   name: 'HelloWorld',
   setup () {
@@ -197,10 +212,23 @@ export default {
     const products = computed(() => {
       return store.state.all_products
     })
+    const categories = ref([])
+    onBeforeMount(() => {
+      axios.get(store.state.baseURL + 'category/')
+        .then(resp => {
+          categories.value = resp.data
+        })
+        .catch(err => {
+          console.log(err.message)
+        })
+    })
     const randomNo = Math.floor(Math.random() * products.value.length)
     console.log(randomNo)
+    const checkedCategory = ref([])
     return {
-      products
+      products,
+      checkedCategory,
+      categories
     }
   }
 }

@@ -125,9 +125,9 @@
           <p>{{ checkedCategory }}</p>
           <div class="flex flex-wrap justify-center p-1">
             <div v-for="category in categories" :key="category.id" class="mx-3">
-              <input v-model="checkedCategory" type="checkbox" :value="category.name" :id="category.slug" hidden />
+              <input v-model="checkedCategory" type="checkbox" :value="category.name" :id="category.slug" @change="onChange(category.id)" hidden />
               <label :for="category.slug" class="mx-2">
-                <img :src="category.icon_image_url" alt="category.name" class="w-12 object-contain rounded-xl border-2 border-purple-50 p-1"/>
+                <img :src="category.icon_image_url" alt="category.name" :class="category.isChecked ? 'w-12 object-contain rounded-xl border-2 border-purple-900 p-1' : 'w-12 object-contain rounded-xl border-2 border-purple-50 p-1'"/>
                 <h4 class="text-center text-sm">
                   {{ category.name }}
                 </h4>
@@ -216,7 +216,9 @@ export default {
     onBeforeMount(() => {
       axios.get(store.state.baseURL + 'category/')
         .then(resp => {
-          categories.value = resp.data
+          categories.value = resp.data.map(response => {
+            return { ...response, isChecked: false }
+          })
         })
         .catch(err => {
           console.log(err.message)
@@ -225,10 +227,19 @@ export default {
     const randomNo = Math.floor(Math.random() * products.value.length)
     console.log(randomNo)
     const checkedCategory = ref([])
+    const onChange = (id) => {
+      console.log(id)
+      categories.value.map(category => {
+        if (category.id === id) {
+          category.isChecked = !category.isChecked
+        }
+      })
+    }
     return {
       products,
       checkedCategory,
-      categories
+      categories,
+      onChange
     }
   }
 }

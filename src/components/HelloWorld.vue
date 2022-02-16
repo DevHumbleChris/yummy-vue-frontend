@@ -125,7 +125,7 @@
           <p>{{ checkedCategory }}</p>
           <div class="flex flex-wrap justify-center p-1">
             <div v-for="category in categories" :key="category.id" class="mx-3">
-              <input v-model="checkedCategory" type="checkbox" :value="category.name" :id="category.slug" @change="onChange(category.id)" hidden />
+              <input v-model="checkedCategory" type="checkbox" :value="category.slug" :id="category.slug" @change="onChange(category.id)" hidden />
               <label :for="category.slug" class="mx-2">
                 <img :src="category.icon_image_url" alt="category.name" :class="category.isChecked ? 'w-12 object-contain rounded-xl border-2 border-purple-900 p-1' : 'w-12 object-contain rounded-xl border-2 border-purple-50 p-1'"/>
                 <h4 class="text-center text-sm">
@@ -209,11 +209,12 @@ export default {
   name: 'HelloWorld',
   setup () {
     const store = useStore()
-    const products = computed(() => {
-      return store.state.all_products
-    })
     const categories = ref([])
+    const products = computed(() => {
+      return store.state.products
+    })
     onBeforeMount(() => {
+      // store.commit('SET_DEFAULT_PRODUCTS', checkedCategory.value)
       axios.get(store.state.baseURL + 'category/')
         .then(resp => {
           categories.value = resp.data.map(response => {
@@ -234,6 +235,7 @@ export default {
           category.isChecked = !category.isChecked
         }
       })
+      store.commit('SET_DEFAULT_PRODUCTS', checkedCategory.value)
     }
     return {
       products,

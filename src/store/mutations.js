@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 export default {
-  SET_LATEST_PRODUCTS (state) {
+  GET_ALL_PRODUCTS (state) {
     axios.get(state.baseURL + 'all-products/')
       .then(resp => {
         state.products = resp.data
@@ -19,8 +19,7 @@ export default {
         console.log(err.message)
       })
   },
-  SET_DEFAULT_PRODUCTS (state, payload) {
-    console.log(payload)
+  FILTER_PRODUCTS (state, payload) {
     if (payload.length <= 0) {
       axios.get(state.baseURL + 'all-products/')
         .then(resp => {

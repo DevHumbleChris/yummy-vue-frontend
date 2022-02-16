@@ -102,7 +102,7 @@
 
             <div class="flex items-center" id="store-nav-content">
               <button
-                class="pl-3 text-indigo-800 text-xl inline-block no-underline hover:text-indigo-300"
+                class="pl-3 text-indigo-800 text-xl inline-block no-underline hover:text-indigo-300" @click="openFilterSelection"
               >
                 <FontAwesomeIcon :icon="['fas', 'filter']" />
               </button>
@@ -115,14 +115,13 @@
             </div>
           </div>
         </nav>
-        <div class="m-auto w-96 my-2 bg-indigo-200 p-3 rounded-2xl shadow-xl">
+        <div v-if="filterSelection" class="m-auto w-96 my-2 bg-indigo-200 p-3 rounded-2xl shadow-xl">
           <div class="flex justify-between my-1">
             <h4 class="text-indigo-500 text-lg">Filter Selection</h4>
-            <button>
+            <button @click="openFilterSelection">
               <FontAwesomeIcon :icon="['far', 'times-circle']" class="text-indigo-500 text-lg" />
             </button>
           </div>
-          <p>{{ checkedCategory }}</p>
           <div class="flex flex-wrap justify-center p-1">
             <div v-for="category in categories" :key="category.id" class="mx-3">
               <input v-model="checkedCategory" type="checkbox" :value="category.slug" :id="category.slug" @change="onChange(category.id)" hidden />
@@ -134,18 +133,17 @@
               </label>
             </div>
           </div>
-          <button class="text-indigo-600 border-2 border-indigo-500 active:border-pink-600 font-bold uppercase text-sm px-6 py-3 rounded-3xl shadow-2xl hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">clear</button>
-          <button class="text-indigo-600 border-2 border-indigo-500 active:border-pink-600 font-bold uppercase text-sm px-6 py-3 rounded-3xl shadow-2xl hover:shadow-lg outline-none focus:outline-none ml-3 mr-1 mb-1 ease-linear transition-all duration-150">close</button>
+          <button class="text-indigo-600 border-2 border-indigo-500 active:border-pink-600 font-bold uppercase text-sm px-6 py-3 rounded-3xl shadow-2xl hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" @click="clearSelection">clear</button>
+          <button class="text-indigo-600 border-2 border-indigo-500 active:border-pink-600 font-bold uppercase text-sm px-6 py-3 rounded-3xl shadow-2xl hover:shadow-lg outline-none focus:outline-none ml-3 mr-1 mb-1 ease-linear transition-all duration-150" @click="openFilterSelection">close</button>
         </div>
 
         <div class="w-full md:w-1/3 xl:w-1/4 p-6 flex flex-col">
           <div v-for="product in products" :key="product.id" class="bg-white shadow-xl rounded-xl hover:grow hover:shadow-lg my-5">
             <img
               class="rounded-t-xl"
-              :src="product.product_image"
+              :src="product.img_path"
               :alt="product.name"
             />
-
             <div class="px-3 pt-3 flex items-center justify-between">
               <p class="text-lg text-blue-900">{{ product.name }}</p>
 
@@ -214,7 +212,6 @@ export default {
       return store.state.products
     })
     onBeforeMount(() => {
-      // store.commit('SET_DEFAULT_PRODUCTS', checkedCategory.value)
       axios.get(store.state.baseURL + 'category/')
         .then(resp => {
           categories.value = resp.data.map(response => {
@@ -235,13 +232,30 @@ export default {
           category.isChecked = !category.isChecked
         }
       })
-      store.commit('SET_DEFAULT_PRODUCTS', checkedCategory.value)
+      store.commit('FILTER_PRODUCTS', checkedCategory.value)
+    }
+    const filterSelection = ref(false)
+    const openFilterSelection = () => {
+      filterSelection.value = !filterSelection.value
+    }
+    const clearSelection = () => {
+      console.log(checkedCategory.value, 'before')
+      setTimeout(() => {
+        checkedCategory.value = []
+        categories.value.forEach(category => {
+          category.isChecked = false
+        })
+        store.commit('FILTER_PRODUCTS', checkedCategory.value)
+      }, 1)
     }
     return {
       products,
       checkedCategory,
       categories,
-      onChange
+      onChange,
+      filterSelection,
+      openFilterSelection,
+      clearSelection
     }
   }
 }

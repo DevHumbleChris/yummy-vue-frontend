@@ -139,7 +139,7 @@
         </div>
 
         <div class="w-full md:w-1/3 xl:w-1/4 p-6 flex flex-col">
-          <div v-for="product in products" :key="product.id" class="bg-white shadow-xl rounded-xl hover:grow hover:shadow-lg my-3">
+          <div v-for="product in products" :key="product.id" class="bg-white shadow-xl rounded-xl hover:grow hover:shadow-lg my-5">
             <img
               class="rounded-t-xl"
               :src="product.product_image"

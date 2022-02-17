@@ -38,5 +38,14 @@ export default {
           })
       })
     }
+  },
+  GET_LATEST_PRODUCTS (state) {
+    axios.get(state.baseURL + 'latest-products/')
+      .then(resp => {
+        state.latestProducts = resp.data
+      })
+      .catch(err => {
+        console.log(err.message)
+      })
   }
 }

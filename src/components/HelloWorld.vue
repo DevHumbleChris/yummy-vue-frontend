@@ -18,22 +18,16 @@
           <div
             class="block h-full w-full mx-auto flex pt-6 md:pt-0 md:items-center bg-cover bg-right"
             style="
-              background-image: url('http://127.0.0.1:8000/media/uploads/-5361573599229620742_121.jpg');
+              background-image: url('http://127.0.0.1:8000/media/uploads/IMG_20211015_172933_021.jpg');
             "
           >
             <div class="container mx-auto">
               <div
                 class="flex flex-col w-full lg:w-1/2 md:ml-16 items-center md:items-start px-6 tracking-wide"
               >
-                <p class="text-black text-2xl my-4">
+                <p class="text-blue-900 text-2xl text-center my-4">
                   Stripy Zig Zag Jigsaw Pillow and Duvet Set
                 </p>
-
-                <a
-                  class="text-xl inline-block no-underline border-b border-gray-600 leading-relaxed hover:text-black hover:border-black"
-                  href="#"
-                  >view product</a
-                >
               </div>
             </div>
           </div>
@@ -63,22 +57,6 @@
           <li class="inline-block mr-3">
             <label
               for="carousel-1"
-              class="carousel-bullet cursor-pointer block text-4xl text-gray-400 hover:text-gray-900"
-              >•</label
-            >
-          </li>
-
-          <li class="inline-block mr-3">
-            <label
-              for="carousel-2"
-              class="carousel-bullet cursor-pointer block text-4xl text-gray-400 hover:text-gray-900"
-              >•</label
-            >
-          </li>
-
-          <li class="inline-block mr-3">
-            <label
-              for="carousel-3"
               class="carousel-bullet cursor-pointer block text-4xl text-gray-400 hover:text-gray-900"
               >•</label
             >
@@ -248,6 +226,9 @@ export default {
         store.commit('FILTER_PRODUCTS', checkedCategory.value)
       }, 1)
     }
+    const latestProducts = computed(() => {
+      return store.state.latestProducts
+    })
     return {
       products,
       checkedCategory,
@@ -255,7 +236,8 @@ export default {
       onChange,
       filterSelection,
       openFilterSelection,
-      clearSelection
+      clearSelection,
+      latestProducts
     }
   }
 }

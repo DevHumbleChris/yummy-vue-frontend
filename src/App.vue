@@ -16,6 +16,7 @@ export default {
     const store = useStore()
     onBeforeMount(() => {
       store.commit('GET_ALL_PRODUCTS')
+      store.commit('GET_LATEST_PRODUCTS')
     })
   }
 }

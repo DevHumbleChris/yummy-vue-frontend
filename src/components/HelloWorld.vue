@@ -1,11 +1,6 @@
 <template>
-  <div class="hello">
-    <div class="relative slide">
-      <div class="carousel-indicators absolute bottom-0 flex bg-yellow-100 h-24 w-full justify-center items-center">
-        <ol class="z-50 flex w-4/12 justify-center">
-          <li v-for="product in latestProducts" :key="product.id" class="md:w-4 md:h-4 bg-gray-300 rounded-full cursor-pointer mx-2"></li>
-        </ol>
-      </div>
+  <section class="hello">
+    <div class="slide">
       <div class="carousel-inner relative overflow-hidden w-full h-96">
         <div v-for="(product, i) in latestProducts" :id="`slide-${i}`" :key="product.id" :class="`${active === i ? 'active' : 'left-full'}`" class="carousel-item inset-0 relative w-full transform transition-all duration-500 ease-in-out">
           <img class="block object-cover" :src="product.img_path" alt="First slide" />
@@ -85,8 +80,14 @@
                 </svg>
               </div>
               <p class="px-3 pb-2 text-indigo-800">
-                {{ product.price }}
+                $ {{ product.price }}
               </p>
+              <div class="mx-2 p-2">
+              <button class="flex justify-center items-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700 mb-2 w-full" @click="addToCart(product)">
+                <FontAwesomeIcon :icon="['fas', 'shopping-cart']" class="mx-2" />
+                Add To Cart
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -126,7 +127,7 @@
         </div>
       </footer>
     </div>
-  </div>
+  </section>
   </template>
 
 <script>
@@ -200,6 +201,9 @@ export default {
       },
       1)
     }
+    const addToCart = (product) => {
+      store.commit('ADD_TO_CART', product)
+    }
     return {
       products,
       checkedCategory,
@@ -209,7 +213,8 @@ export default {
       openFilterSelection,
       clearSelection,
       latestProducts,
-      active
+      active,
+      addToCart
     }
   }
 }

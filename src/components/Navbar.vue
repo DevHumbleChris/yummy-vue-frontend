@@ -37,7 +37,7 @@
       </Dialog>
     </TransitionRoot>
 
-    <header class="relative bg-white">
+    <header class="fixed w-full top-0 right-0 left-0 z-30 bg-white">
       <p class="bg-indigo-600 h-10 flex items-center justify-center text-sm font-medium text-white px-4 sm:px-6 lg:px-8">Get free delivery on orders over $100</p>
 
       <nav aria-label="Top" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -130,7 +130,7 @@
               <div class="ml-4 flow-root lg:ml-6">
                 <button class="group -m-2 p-2 flex items-center" @click="openCart">
                   <FontAwesomeIcon :icon="['fas', 'shopping-cart']" class="flex-shrink-0 h-6 w-6 text-gray-400 group-hover:text-gray-500" aria-hidden="true" />
-                  <span class="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">0</span>
+                  <span v-if="totalNoOfCart > 0" class="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800"> {{ totalNoOfCart }}</span>
                   <span class="sr-only">items in cart, view bag</span>
                 </button>
                 <Cart />
@@ -144,7 +144,7 @@
 </template>
 
 <script>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useStore } from 'vuex'
 import axios from 'axios'
 import {
@@ -313,11 +313,15 @@ export default {
     const openCart = () => {
       store.commit('OPEN_CART')
     }
+    const totalNoOfCart = computed(() => {
+      return store.getters.totalNoOfCart
+    })
     return {
       navigation,
       open,
       categories,
-      openCart
+      openCart,
+      totalNoOfCart
     }
   }
 }

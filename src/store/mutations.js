@@ -50,5 +50,23 @@ export default {
   },
   OPEN_CART (state) {
     state.openCart = !state.openCart
+  },
+  ADD_TO_CART (state, payload) {
+    const product = { ...payload, quantity: 1 }
+    state.cart.push(product)
+  },
+  INCREMENT_QUANTITY (state, payload) {
+    state.cart.map(product => {
+      if (product.id === payload) {
+        product.quantity += 1
+      }
+    })
+  },
+  DECREMENT_QUANTITY (state, payload) {
+    state.cart.map(product => {
+      if (product.id === payload) {
+        product.quantity -= 1
+      }
+    })
   }
 }

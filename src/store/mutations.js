@@ -47,5 +47,8 @@ export default {
       .catch(err => {
         console.log(err.message)
       })
+  },
+  OPEN_CART (state) {
+    state.openCart = !state.openCart
   }
 }

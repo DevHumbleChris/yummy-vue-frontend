@@ -4,5 +4,6 @@ export default {
   products: [],
   latestProducts: [],
   isAuthenticated: false,
-  categories: []
+  categories: [],
+  openCart: false
 }

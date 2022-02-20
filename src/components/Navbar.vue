@@ -8,7 +8,7 @@
         </TransitionChild>
 
         <TransitionChild as="template" enter="transition ease-in-out duration-300 transform" enter-from="-translate-x-full" enter-to="translate-x-0" leave="transition ease-in-out duration-300 transform" leave-from="translate-x-0" leave-to="-translate-x-full">
-          <div class="relative max-w-xs w-full bg-white shadow-xl pb-12 flex flex-col overflow-y-auto">
+          <div class="relative max-w-xs w-full bg-indigo-100 shadow-xl pb-12 flex flex-col overflow-y-auto">
             <div class="px-4 pt-5 pb-2 flex">
               <button type="button" class="-m-2 p-2 rounded-md inline-flex items-center justify-center text-gray-400" @click="open = false">
                 <span class="sr-only">Close menu</span>
@@ -19,7 +19,7 @@
             <div class="py-6 px-4 space-y-6">
               <div v-for="category in categories" :key="category.id" class="flow-root">
                 <a :href="category.slug" class="-m-2 p-2 block font-medium text-gray-900 flex items-center">
-                  <img :src="category.icon_image_url" class="h-8 w-auto "/>
+                  <img :src="category.icon_image_url" class="h-8 w-auto " />
                   <span class="mx-2 capitalize">{{ category.name }}</span></a>
               </div>
             </div>
@@ -37,8 +37,10 @@
       </Dialog>
     </TransitionRoot>
 
-    <header class="fixed w-full top-0 right-0 left-0 z-30 bg-white">
-      <p class="bg-indigo-600 h-10 flex items-center justify-center text-sm font-medium text-white px-4 sm:px-6 lg:px-8">Get free delivery on orders over $100</p>
+    <header class="fixed w-full top-0 right-0 left-0 z-30 bg-indigo-100">
+      <p class="bg-indigo-600 h-10 flex items-center justify-center text-sm font-medium text-white px-4 sm:px-6 lg:px-8">
+        Get free delivery on orders over $100
+      </p>
 
       <nav aria-label="Top" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="border-b border-gray-200">
@@ -50,63 +52,15 @@
 
             <!-- Logo -->
             <div class="ml-4 flex lg:ml-0">
-              <a href="#">
-                <span class="sr-only">Workflow</span>
-                <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/workflow-mark.svg?color=indigo&shade=600" alt="" />
-              </a>
+              <router-link to="/" class="flex items-center">
+                <img class="h-8 w-auto" src="https://img.icons8.com/external-tulpahn-outline-color-tulpahn/64/000000/external-tasty-heart-feeling-tulpahn-outline-color-tulpahn.png" alt="e-yummy-ke logo" />
+                <h4 class="mx-2 text-xl text-indigo-600">YummyKE</h4>
+              </router-link>
             </div>
 
             <!-- Flyout menus -->
             <PopoverGroup class="hidden lg:ml-8 lg:block lg:self-stretch">
               <div class="h-full flex space-x-8">
-                <Popover v-for="category in navigation.categories" :key="category.name" class="flex" v-slot="{ open }">
-                  <div class="relative flex">
-                    <PopoverButton :class="[open ? 'border-indigo-600 text-indigo-600' : 'border-transparent text-gray-700 hover:text-gray-800', 'relative z-10 flex items-center transition-colors ease-out duration-200 text-sm font-medium border-b-2 -mb-px pt-px']">
-                      {{ category.name }}
-                    </PopoverButton>
-                  </div>
-
-                  <transition enter-active-class="transition ease-out duration-200" enter-from-class="opacity-0" enter-to-class="opacity-100" leave-active-class="transition ease-in duration-150" leave-from-class="opacity-100" leave-to-class="opacity-0">
-                    <PopoverPanel class="absolute top-full inset-x-0 text-sm text-gray-500">
-                      <!-- Presentational element used to render the bottom shadow, if we put the shadow on the actual panel it pokes out the top, so we use this shorter element to hide the top of the shadow -->
-                      <div class="absolute inset-0 top-1/2 bg-white shadow" aria-hidden="true" />
-
-                      <div class="relative bg-white">
-                        <div class="max-w-7xl mx-auto px-8">
-                          <div class="grid grid-cols-2 gap-y-10 gap-x-8 py-16">
-                            <div class="col-start-2 grid grid-cols-2 gap-x-8">
-                              <div v-for="item in category.featured" :key="item.name" class="group relative text-base sm:text-sm">
-                                <div class="aspect-w-1 aspect-h-1 rounded-lg bg-gray-100 overflow-hidden group-hover:opacity-75">
-                                  <img :src="item.imageSrc" :alt="item.imageAlt" class="object-center object-cover" />
-                                </div>
-                                <a :href="item.href" class="mt-6 block font-medium text-gray-900">
-                                  <span class="absolute z-10 inset-0" aria-hidden="true" />
-                                  {{ item.name }}
-                                </a>
-                                <p aria-hidden="true" class="mt-1">Shop now</p>
-                              </div>
-                            </div>
-                            <div class="row-start-1 grid grid-cols-3 gap-y-10 gap-x-8 text-sm">
-                              <div v-for="section in category.sections" :key="section.name">
-                                <p :id="`${section.name}-heading`" class="font-medium text-gray-900">
-                                  {{ section.name }}
-                                </p>
-                                <ul role="list" :aria-labelledby="`${section.name}-heading`" class="mt-6 space-y-6 sm:mt-4 sm:space-y-4">
-                                  <li v-for="item in section.items" :key="item.name" class="flex">
-                                    <a :href="item.href" class="hover:text-gray-800">
-                                      {{ item.name }}
-                                    </a>
-                                  </li>
-                                </ul>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </PopoverPanel>
-                  </transition>
-                </Popover>
-
                 <a v-for="page in navigation.pages" :key="page.name" :href="page.href" class="flex items-center text-sm font-medium text-gray-700 hover:text-gray-800">{{ page.name }}</a>
               </div>
             </PopoverGroup>
@@ -127,13 +81,45 @@
               </div>
 
               <!-- Cart -->
-              <div class="ml-4 flow-root lg:ml-6">
-                <button class="group -m-2 p-2 flex items-center" @click="openCart">
+              <div class="ml-4 mr-3 flow-root lg:ml-6">
+                <button class="relative group -m-2 p-2 flex items-center" @click="openCart">
                   <FontAwesomeIcon :icon="['fas', 'shopping-cart']" class="flex-shrink-0 h-6 w-6 text-gray-400 group-hover:text-gray-500" aria-hidden="true" />
-                  <span v-if="totalNoOfCart > 0" class="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800"> {{ totalNoOfCart }}</span>
+                  <span v-if="totalNoOfCart > 0" class="absolute top-0 -right-2 flex items-center justify-center ml-2 max-w-sm h-4  font-medium bg-green-600 px-2 py-1 rounded shadow-xl text-white group-hover:text-gray-800"> {{ totalNoOfCart }}</span>
                   <span class="sr-only">items in cart, view bag</span>
                 </button>
                 <Cart />
+              </div>
+              <div class="ml-4 flow-root lg:ml-6">
+                <Menu as="div" class="relative inline-block text-left">
+                  <div>
+                    <MenuButton class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500">
+                      <button class="group -m-2 p-2 flex items-center">
+                  <FontAwesomeIcon :icon="['fas', 'user']" class="flex-shrink-0 h-6 w-6 text-gray-400 group-hover:text-gray-500" aria-hidden="true" />
+                </button>
+                    </MenuButton>
+                  </div>
+
+                  <transition enter-active-class="transition ease-out duration-100" enter-from-class="transform opacity-0 scale-95" enter-to-class="transform opacity-100 scale-100" leave-active-class="transition ease-in duration-75" leave-from-class="transform opacity-100 scale-100" leave-to-class="transform opacity-0 scale-95">
+                    <MenuItems class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+                      <div class="py-1">
+                        <MenuItem v-slot="{ active }">
+                          <a href="#" :class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block px-4 py-2 text-sm']">Account settings</a>
+                        </MenuItem>
+                        <MenuItem v-slot="{ active }">
+                          <a href="#" :class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block px-4 py-2 text-sm']">Support</a>
+                        </MenuItem>
+                        <MenuItem v-slot="{ active }">
+                          <a href="#" :class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block px-4 py-2 text-sm']">License</a>
+                        </MenuItem>
+                        <form method="POST" action="#">
+                          <MenuItem v-slot="{ active }">
+                            <button type="submit" :class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block w-full text-left px-4 py-2 text-sm']">Sign out</button>
+                          </MenuItem>
+                        </form>
+                      </div>
+                    </MenuItems>
+                  </transition>
+                </Menu>
               </div>
             </div>
           </div>
@@ -144,158 +130,262 @@
 </template>
 
 <script>
-import { ref, onMounted, computed } from 'vue'
-import { useStore } from 'vuex'
+import {
+  ref,
+  onMounted,
+  computed
+} from 'vue'
+import {
+  useStore
+} from 'vuex'
 import axios from 'axios'
 import {
   Dialog,
   DialogOverlay,
-  Popover,
-  PopoverButton,
   PopoverGroup,
-  PopoverPanel,
   TransitionChild,
-  TransitionRoot
+  TransitionRoot,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuItems
 } from '@headlessui/vue'
-import { MenuIcon, XIcon } from '@heroicons/vue/outline'
+import {
+  MenuIcon,
+  XIcon
+} from '@heroicons/vue/outline'
 import Cart from '@/components/Cart.vue'
 
 const navigation = {
-  categories: [
-    {
-      id: 'women',
-      name: 'Women',
-      featured: [
-        {
-          name: 'New Arrivals',
-          href: '#',
-          imageSrc: 'https://tailwindui.com/img/ecommerce-images/mega-menu-category-01.jpg',
-          imageAlt: 'Models sitting back to back, wearing Basic Tee in black and bone.'
-        },
-        {
-          name: 'Basic Tees',
-          href: '#',
-          imageSrc: 'https://tailwindui.com/img/ecommerce-images/mega-menu-category-02.jpg',
-          imageAlt: 'Close up of Basic Tee fall bundle with off-white, ochre, olive, and black tees.'
-        }
-      ],
-      sections: [
-        {
-          id: 'clothing',
-          name: 'Clothing',
-          items: [
-            { name: 'Tops', href: '#' },
-            { name: 'Dresses', href: '#' },
-            { name: 'Pants', href: '#' },
-            { name: 'Denim', href: '#' },
-            { name: 'Sweaters', href: '#' },
-            { name: 'T-Shirts', href: '#' },
-            { name: 'Jackets', href: '#' },
-            { name: 'Activewear', href: '#' },
-            { name: 'Browse All', href: '#' }
-          ]
-        },
-        {
-          id: 'accessories',
-          name: 'Accessories',
-          items: [
-            { name: 'Watches', href: '#' },
-            { name: 'Wallets', href: '#' },
-            { name: 'Bags', href: '#' },
-            { name: 'Sunglasses', href: '#' },
-            { name: 'Hats', href: '#' },
-            { name: 'Belts', href: '#' }
-          ]
-        },
-        {
-          id: 'brands',
-          name: 'Brands',
-          items: [
-            { name: 'Full Nelson', href: '#' },
-            { name: 'My Way', href: '#' },
-            { name: 'Re-Arranged', href: '#' },
-            { name: 'Counterfeit', href: '#' },
-            { name: 'Significant Other', href: '#' }
-          ]
-        }
-      ]
+  categories: [{
+    id: 'women',
+    name: 'Women',
+    featured: [{
+      name: 'New Arrivals',
+      href: '#',
+      imageSrc: 'https://tailwindui.com/img/ecommerce-images/mega-menu-category-01.jpg',
+      imageAlt: 'Models sitting back to back, wearing Basic Tee in black and bone.'
     },
     {
-      id: 'men',
-      name: 'Men',
-      featured: [
-        {
-          name: 'New Arrivals',
-          href: '#',
-          imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-04-detail-product-shot-01.jpg',
-          imageAlt: 'Drawstring top with elastic loop closure and textured interior padding.'
-        },
-        {
-          name: 'Artwork Tees',
-          href: '#',
-          imageSrc: 'https://tailwindui.com/img/ecommerce-images/category-page-02-image-card-06.jpg',
-          imageAlt:
+      name: 'Basic Tees',
+      href: '#',
+      imageSrc: 'https://tailwindui.com/img/ecommerce-images/mega-menu-category-02.jpg',
+      imageAlt: 'Close up of Basic Tee fall bundle with off-white, ochre, olive, and black tees.'
+    }],
+    sections: [{
+      id: 'clothing',
+      name: 'Clothing',
+      items: [{
+        name: 'Tops',
+        href: '#'
+      },
+      {
+        name: 'Dresses',
+        href: '#'
+      },
+      {
+        name: 'Pants',
+        href: '#'
+      },
+      {
+        name: 'Denim',
+        href: '#'
+      },
+      {
+        name: 'Sweaters',
+        href: '#'
+      },
+      {
+        name: 'T-Shirts',
+        href: '#'
+      },
+      {
+        name: 'Jackets',
+        href: '#'
+      },
+      {
+        name: 'Activewear',
+        href: '#'
+      },
+      {
+        name: 'Browse All',
+        href: '#'
+      }]
+    },
+    {
+      id: 'accessories',
+      name: 'Accessories',
+      items: [{
+        name: 'Watches',
+        href: '#'
+      },
+      {
+        name: 'Wallets',
+        href: '#'
+      },
+      {
+        name: 'Bags',
+        href: '#'
+      },
+      {
+        name: 'Sunglasses',
+        href: '#'
+      },
+      {
+        name: 'Hats',
+        href: '#'
+      },
+      {
+        name: 'Belts',
+        href: '#'
+      }]
+    },
+    {
+      id: 'brands',
+      name: 'Brands',
+      items: [{
+        name: 'Full Nelson',
+        href: '#'
+      },
+      {
+        name: 'My Way',
+        href: '#'
+      },
+      {
+        name: 'Re-Arranged',
+        href: '#'
+      },
+      {
+        name: 'Counterfeit',
+        href: '#'
+      },
+      {
+        name: 'Significant Other',
+        href: '#'
+      }]
+    }]
+  },
+  {
+    id: 'men',
+    name: 'Men',
+    featured: [{
+      name: 'New Arrivals',
+      href: '#',
+      imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-04-detail-product-shot-01.jpg',
+      imageAlt: 'Drawstring top with elastic loop closure and textured interior padding.'
+    },
+    {
+      name: 'Artwork Tees',
+      href: '#',
+      imageSrc: 'https://tailwindui.com/img/ecommerce-images/category-page-02-image-card-06.jpg',
+      imageAlt:
             'Three shirts in gray, white, and blue arranged on table with same line drawing of hands and shapes overlapping on front of shirt.'
-        }
-      ],
-      sections: [
-        {
-          id: 'clothing',
-          name: 'Clothing',
-          items: [
-            { name: 'Tops', href: '#' },
-            { name: 'Pants', href: '#' },
-            { name: 'Sweaters', href: '#' },
-            { name: 'T-Shirts', href: '#' },
-            { name: 'Jackets', href: '#' },
-            { name: 'Activewear', href: '#' },
-            { name: 'Browse All', href: '#' }
-          ]
-        },
-        {
-          id: 'accessories',
-          name: 'Accessories',
-          items: [
-            { name: 'Watches', href: '#' },
-            { name: 'Wallets', href: '#' },
-            { name: 'Bags', href: '#' },
-            { name: 'Sunglasses', href: '#' },
-            { name: 'Hats', href: '#' },
-            { name: 'Belts', href: '#' }
-          ]
-        },
-        {
-          id: 'brands',
-          name: 'Brands',
-          items: [
-            { name: 'Re-Arranged', href: '#' },
-            { name: 'Counterfeit', href: '#' },
-            { name: 'Full Nelson', href: '#' },
-            { name: 'My Way', href: '#' }
-          ]
-        }
-      ]
-    }
-  ],
-  pages: [
-    { name: 'Company', href: '#' },
-    { name: 'Stores', href: '#' }
-  ]
+    }],
+    sections: [{
+      id: 'clothing',
+      name: 'Clothing',
+      items: [{
+        name: 'Tops',
+        href: '#'
+      },
+      {
+        name: 'Pants',
+        href: '#'
+      },
+      {
+        name: 'Sweaters',
+        href: '#'
+      },
+      {
+        name: 'T-Shirts',
+        href: '#'
+      },
+      {
+        name: 'Jackets',
+        href: '#'
+      },
+      {
+        name: 'Activewear',
+        href: '#'
+      },
+      {
+        name: 'Browse All',
+        href: '#'
+      }]
+    },
+    {
+      id: 'accessories',
+      name: 'Accessories',
+      items: [{
+        name: 'Watches',
+        href: '#'
+      },
+      {
+        name: 'Wallets',
+        href: '#'
+      },
+      {
+        name: 'Bags',
+        href: '#'
+      },
+      {
+        name: 'Sunglasses',
+        href: '#'
+      },
+      {
+        name: 'Hats',
+        href: '#'
+      },
+      {
+        name: 'Belts',
+        href: '#'
+      }]
+    },
+    {
+      id: 'brands',
+      name: 'Brands',
+      items: [{
+        name: 'Re-Arranged',
+        href: '#'
+      },
+      {
+        name: 'Counterfeit',
+        href: '#'
+      },
+      {
+        name: 'Full Nelson',
+        href: '#'
+      },
+      {
+        name: 'My Way',
+        href: '#'
+      }]
+    }]
+  }],
+  pages: [{
+    name: 'Company',
+    href: '#'
+  },
+  {
+    name: 'Stores',
+    href: '#'
+  }]
 }
 
 export default {
   components: {
     Dialog,
     DialogOverlay,
-    Popover,
-    PopoverButton,
     PopoverGroup,
-    PopoverPanel,
     TransitionChild,
     TransitionRoot,
     MenuIcon,
     XIcon,
-    Cart
+    Cart,
+    Menu,
+    MenuButton,
+    MenuItem,
+    MenuItems
   },
   setup () {
     const open = ref(false)
@@ -327,8 +417,8 @@ export default {
 }
 </script>
 
-<style>
-  .stylish-font {
-  font-family: 'Shizuru', cursive;
-}
-</style>
+  <style>
+    .stylish-font {
+      font-family: 'Shizuru', cursive;
+    }
+  </style>

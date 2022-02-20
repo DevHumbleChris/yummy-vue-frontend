@@ -88,6 +88,15 @@
                 Add To Cart
                 </button>
               </div>
+              <div class="mx-2 p-2 flex justify-between items-center">
+              <button class="px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700 mb-2" @click="addToCart(product)">
+                <FontAwesomeIcon :icon="['fas', 'minus']" class="mx-2" />
+                </button>
+                <p class="text-2xl">0</p>
+                <button class="px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700 mb-2" @click="addToCart(product)">
+                <FontAwesomeIcon :icon="['fas', 'plus']" class="mx-2" />
+                </button>
+              </div>
             </div>
           </div>
         </div>

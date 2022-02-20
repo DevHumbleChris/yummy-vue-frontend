@@ -1,5 +1,15 @@
 import axios from 'axios'
 
+function CALCULATE_QTY_AND_PRICE (state, payload) {
+  state.cart.map(product => {
+    if (product.id === payload) {
+      const total = product.quantity * parseInt(product.price)
+      product.totalPrice = total
+      console.log(product.totalPrice, 'Accessed')
+    }
+  })
+}
+
 export default {
   GET_ALL_PRODUCTS (state) {
     axios.get(state.baseURL + 'all-products/')
@@ -52,7 +62,7 @@ export default {
     state.openCart = !state.openCart
   },
   ADD_TO_CART (state, payload) {
-    const product = { ...payload, quantity: 1 }
+    const product = { ...payload, quantity: 1, totalPrice: parseInt(payload.price) }
     state.cart.push(product)
   },
   INCREMENT_QUANTITY (state, payload) {
@@ -60,13 +70,16 @@ export default {
       if (product.id === payload) {
         product.quantity += 1
       }
+      CALCULATE_QTY_AND_PRICE(state, payload)
     })
   },
   DECREMENT_QUANTITY (state, payload) {
     state.cart.map(product => {
       if (product.id === payload) {
         product.quantity -= 1
+        CALCULATE_QTY_AND_PRICE(state, payload)
       }
     })
-  }
+  },
+  CALCULATE_QTY_AND_PRICE
 }

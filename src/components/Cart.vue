@@ -47,16 +47,19 @@
                               </div>
                             </div>
                             <div class="my-2">
-                          <button class="text-indigo-600 border-2 border-indigo-500 active:border-pink-600 font-bold uppercase text-sm p-1 rounded-xl shadow-2xl hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" @click="incrementQuantity(product.id)">
+                          <button class="text-indigo-600 border-2 border-indigo-500 active:border-pink-600 font-bold uppercase text-sm p-1 rounded-xl shadow-2xl hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" @click="decrementQuantity(product.id)" :disabled="product.quantity <= 1">
                       <FontAwesomeIcon :icon="['fas', 'minus' ]" />
                                 </button>
                                 Qty: <span class="mx-1">{{ product.quantity }}</span>
-                                <button class="text-indigo-600 border-2 border-indigo-500 active:border-pink-600 font-bold uppercase text-sm p-1 rounded-xl shadow-2xl hover:shadow-lg outline-none focus:outline-none ml-1 mb-1 ease-linear transition-all duration-150" @click="decrementQuantity(product.id)">
+                                <button class="text-indigo-600 border-2 border-indigo-500 active:border-pink-600 font-bold uppercase text-sm p-1 rounded-xl shadow-2xl hover:shadow-lg outline-none focus:outline-none ml-1 mb-1 ease-linear transition-all duration-150" @click="incrementQuantity(product.id)">
                       <FontAwesomeIcon :icon="['fas', 'plus' ]" />
                                 </button>
                             </div>
                             <div class="flex-1 flex items-center justify-between text-sm">
-                              <p class="text-gray-500">Total: {{ product.quantity }}</p>
+                              <p class="text-gray-500">Total Price:
+                      <span class="mx-1 text-indigo-600">$ {{ product.totalPrice }}
+                    </span>
+                    </p>
 
                               <div class="flex">
                                 <button type="button" class="text-red-600 border-2 border-red-500 active:border-red-900 font-bold text-sm p-1 rounded-xl shadow-2xl hover:shadow-lg outline-none focus:outline-none ml-1 mb-1 ease-linear transition-all duration-150">Remove</button>
@@ -72,11 +75,11 @@
                 <div class="border-t border-gray-200 py-6 px-4 sm:px-6">
                   <div class="flex justify-between text-base font-medium text-gray-900">
                     <p>Subtotal</p>
-                    <p>$262.00</p>
+                    <p>$ {{ subTotal }}</p>
                   </div>
                   <p class="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
                   <div class="mt-6">
-                    <router-link to="/checkout" class="flex justify-center items-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700">
+                    <router-link to="/checkout" class="flex justify-center items-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700" @click="setOpenCart">
                       Checkout
                     </router-link>
                   </div>
@@ -130,6 +133,9 @@ export default {
     const decrementQuantity = (id) => {
       store.commit('DECREMENT_QUANTITY', id)
     }
+    const subTotal = computed(() => {
+      return store.getters.SUB_TOTAL
+    })
 
     return {
       openCart,
@@ -137,7 +143,8 @@ export default {
       cart,
       totalNoOfCart,
       incrementQuantity,
-      decrementQuantity
+      decrementQuantity,
+      subTotal
     }
   }
 }

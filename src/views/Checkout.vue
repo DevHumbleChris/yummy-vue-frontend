@@ -13,16 +13,16 @@
             <div class="-mx-3 md:flex items-start">
                 <div class="px-3 md:w-7/12 lg:pr-10">
                     <div class="w-full mx-auto text-gray-800 font-light mb-6 border-b border-gray-200 pb-6">
-                        <div class="w-full flex items-center">
-                            <div class="overflow-hidden rounded-lg w-16 h-16 bg-gray-50 border border-gray-200">
-                                <img src="https://images.unsplash.com/photo-1572635196237-14b3f281503f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1160&q=80" alt="">
+                        <div v-for="product in cart" :key="product.id" class="w-full flex items-center p-2">
+                            <div class="overflow-hidden rounded-lg w-16 h-16 bg-gray-50 border border-gray-200 my-1">
+                                <img :src="product.img_path" :alt="product.name">
                             </div>
                             <div class="flex-grow pl-3">
-                                <h6 class="font-semibold uppercase text-gray-600">Ray Ban Sunglasses.</h6>
-                                <p class="text-gray-400">x 1</p>
+                                <h6 class="font-semibold uppercase text-gray-600"> {{ product.name }}</h6>
+                                <p class="text-gray-400">x {{ product.quantity }}</p>
                             </div>
                             <div>
-                                <span class="font-semibold text-gray-600 text-xl">$210</span><span class="font-semibold text-gray-600 text-sm">.00</span>
+                                <span class="font-semibold text-gray-600 text-xl">$ {{ product.price }}</span>
                             </div>
                         </div>
                     </div>
@@ -45,7 +45,7 @@
                                 <span class="text-gray-600">Subtotal</span>
                             </div>
                             <div class="pl-3">
-                                <span class="font-semibold">$190.91</span>
+                                <span class="font-semibold">$ {{ subTotal }}</span>
                             </div>
                         </div>
                         <div class="w-full flex items-center">
@@ -53,7 +53,7 @@
                                 <span class="text-gray-600">Taxes (GST)</span>
                             </div>
                             <div class="pl-3">
-                                <span class="font-semibold">$19.09</span>
+                                <span class="font-semibold">$ {{ taxDeduction }}</span>
                             </div>
                         </div>
                     </div>
@@ -63,7 +63,7 @@
                                 <span class="text-gray-600">Total</span>
                             </div>
                             <div class="pl-3">
-                                <span class="font-semibold text-gray-400 text-sm">AUD</span> <span class="font-semibold">$210.00</span>
+                                <span class="font-semibold text-gray-400 text-sm">AUD</span> <span class="font-semibold">$ {{ grandTotal }}</span>
                             </div>
                         </div>
                     </div>
@@ -169,10 +169,27 @@
 </template>
 
 <script>
+import { useStore } from 'vuex'
+import { computed } from 'vue'
+
 export default {
   name: 'Checkout',
   setup () {
-    return {}
+    const store = useStore()
+    const cart = computed(() => {
+      return store.state.cart
+    })
+    const subTotal = computed(() => {
+      return store.getters.SUB_TOTAL
+    })
+    const taxDeduction = subTotal.value * (20 / 100)
+    const grandTotal = subTotal.value + taxDeduction
+    return {
+      cart,
+      subTotal,
+      taxDeduction,
+      grandTotal
+    }
   }
 }
 </script>
